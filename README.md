@@ -1,4 +1,4 @@
-# YouTube Chips Chrome Extension
+# 🍟 YouTube Chips Chrome Extension
 
 Filter YouTube by category and set time-based preferences. Your chosen chip is auto-applied, and if missing, the closest match is selected. Stay focused, effortlessly! 🚀
 

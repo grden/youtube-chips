@@ -23,8 +23,8 @@ export function Footer({ selectedChip, tempPref, tempPrefSource, activeTimePrefe
         <div className="border-t border-gray-200 bg-white pt-2 pb-3 px-4 shadow-md">
             {isTimePreferenceActive && (
                 <div className="mb-2 text-xs font-medium text-blue-600 bg-blue-50 p-2 rounded-md">
-                    A time-based preference (${activeTimePreference.startHour}:00-${activeTimePreference.endHour}:00) is currently active.
-                    Manual selection is disabled.
+                    A time-based preference is currently active.
+                    Manual selection is disabled during {activeTimePreference.startHour}:00-{activeTimePreference.endHour}:00.
                 </div>
             )}
 

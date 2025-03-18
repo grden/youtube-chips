@@ -3,7 +3,7 @@ import { TimePreference, getTimePreferences, saveTimePreference, updateTimePrefe
 import { Layout } from '../components/layout';
 import { StatusMessage } from '../components/status-message';
 import { PreferencesSection } from '../components/preferences-section';
-import { FormErrors } from '../constants/contant';
+import { FormErrors } from '../contants';
 
 // Status message type
 type StatusMessage = {
@@ -151,7 +151,7 @@ export default function App() {
                 }}
             />
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                <h3 className="font-medium text-blue-800 mb-2">How Time Preferences Work</h3>
+                <h3 className="font-medium text-blue-700 mb-2">How Time Preferences Work</h3>
                 <ul className="list-disc pl-5 text-sm text-blue-700 space-y-1">
                     <li>Time preferences automatically select YouTube categories during specified hours and days</li>
                     <li>They override your global preference when active</li>

@@ -2,7 +2,7 @@ import React from 'react'
 import { TimePreference, checkForTimePreferenceOverlap } from '../../utils/storage'
 import { TimePreferenceForm } from './timepref-form'
 import TimePreferenceCard from './timepref-card'
-import { FormErrors } from '../constants/contant'
+import { FormErrors } from '../contants'
 
 interface PreferencesSectionProps {
   timePreferences: TimePreference[]

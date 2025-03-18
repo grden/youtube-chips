@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TimePreference } from '../../utils/storage';
-import { PREDEFINED_CATEGORIES, CUSTOM_OPTION, DAYS_OF_WEEK, HOURS, FormErrors } from "../constants/contant";
+import { PREDEFINED_CATEGORIES, CUSTOM_OPTION, DAYS_OF_WEEK, HOURS, FormErrors } from "../contants";
 import { v4 as uuidv4 } from 'uuid';
 
 interface TimePreferenceFormProps {

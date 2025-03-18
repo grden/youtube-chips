@@ -1,6 +1,6 @@
 import React from "react";
 import { TimePreference } from "../../utils/storage";
-import { DAYS_OF_WEEK } from "../constants/contant";
+import { DAYS_OF_WEEK } from "../contants";
 
 interface TimePreferenceCardProps {
     preference: TimePreference;

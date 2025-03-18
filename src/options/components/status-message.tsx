@@ -9,7 +9,7 @@ export function StatusMessage({ status }: StatusMessageProps) {
 
   return (
     <div
-      className={`p-3 mb-4 rounded-md ${status.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
+      className={`p-3 mb-4 rounded-md text-sm ${status.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
     >
       {status.text}
     </div>

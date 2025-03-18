@@ -46,7 +46,7 @@ export function PreferencesSection({
         )}
       </div>
 
-      <p className="text-sm text-gray-600 mb-4">
+      <p className="text-sm text-gray-500 mb-4">
         Set YouTube categories to be automatically selected during specific time periods.
         These will override your global preference during the specified times.
       </p>

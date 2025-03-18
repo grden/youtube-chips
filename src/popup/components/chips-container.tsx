@@ -41,7 +41,7 @@ export function ChipsSection({
 
 function EmptyState() {
     return (
-        <p className="text-gray-900 text-sm text-center">
+        <p className="text-gray-500 text-sm text-center">
             No categories found. Make sure you're on YouTube's main page, and refresh it.
         </p>
     )

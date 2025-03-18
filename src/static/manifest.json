@@ -1,0 +1,36 @@
+{
+  "name": "YouTube Chips",
+  "description": "Filter YouTube by category and set time-based preferences. Your chosen chip is auto-applied, and if missing, the closest match is selected.",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "YouTube Chips",
+    "default_icon": "icon.png"
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "alarms"
+  ],
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}

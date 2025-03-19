@@ -2,7 +2,7 @@ import React from "react";
 
 export function InstructionCard() {
     return (
-        <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+        <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
             <h3 className="font-medium text-sm text-blue-700 mb-2">How Time Preferences Work</h3>
             <ul className="list-disc pl-5 text-sm text-blue-700 space-y-1">
                 <li>Time preferences automatically select YouTube categories during specified hours and days</li>

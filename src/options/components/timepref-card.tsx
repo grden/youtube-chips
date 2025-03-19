@@ -27,13 +27,13 @@ export default function TimePreferenceCard({ preference, onEdit, onDelete }: Tim
             <div className="flex space-x-2">
                 <button
                     onClick={() => onEdit(preference.id)}
-                    className="px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition-colors"
+                    className="px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors"
                 >
                     Edit
                 </button>
                 <button
                     onClick={() => onDelete(preference.id)}
-                    className="px-3 py-1 text-sm bg-red-50 text-red-600 rounded hover:bg-red-100 transition-colors"
+                    className="px-3 py-1 text-sm bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition-colors"
                 >
                     Delete
                 </button>

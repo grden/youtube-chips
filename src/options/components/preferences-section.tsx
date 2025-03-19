@@ -33,13 +33,13 @@ export function PreferencesSection({
   };
 
   return (
-    <div className="bg-gray-50 p-4 rounded-lg mb-6">
+    <div className="bg-gray-50 p-4 rounded-xl mb-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-medium text-gray-900">Time-Based Preferences</h2>
         {!showForm && (
           <button
             onClick={onAddNew}
-            className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors"
+            className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
           >
             Add New
           </button>

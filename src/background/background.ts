@@ -33,7 +33,7 @@ const checkTimePreferences = async (): Promise<void> => {
       console.log(`Active time preference found: ${activePref.preference} (${activePref.startHour}-${activePref.endHour})`);
 
       // Refresh the active YouTube tab
-      const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: false, url: 'https://www.youtube.com/*' });
+      const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: false, url: 'https://www.youtube.com/' });
       if (activeTab?.url) {
         console.log('Refreshing active YouTube tab...');
         chrome.tabs.reload(activeTab.id);

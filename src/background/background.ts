@@ -11,26 +11,33 @@ const setupAlarm = (): void => {
   chrome.alarms.create(ALARM_NAME, {
     periodInMinutes: CHECK_INTERVAL_MINUTES,
   });
-  
+
   console.log(`Set up alarm to check time preferences every ${CHECK_INTERVAL_MINUTES} minutes`);
-  
+
   // Run an initial check immediately
   checkTimePreferences();
 };
 
 /**
- * Checks if any time preference is currently active
+ * Checks if any time preference is currently active and refreshes the active YouTube tab if necessary
  */
 const checkTimePreferences = async (): Promise<void> => {
   try {
     console.log('Checking for active time preferences...');
-    
+
     const activePref = await getActiveTimePreference();
-    
+
     // Store active preference in local storage for quick access
     if (activePref) {
       await chrome.storage.local.set({ activeTimePreference: activePref });
       console.log(`Active time preference found: ${activePref.preference} (${activePref.startHour}-${activePref.endHour})`);
+
+      // Refresh the active YouTube tab
+      const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: false, url: 'https://www.youtube.com/*' });
+      if (activeTab?.url) {
+        console.log('Refreshing active YouTube tab...');
+        chrome.tabs.reload(activeTab.id);
+      }
     } else {
       // Clear any previously active preference
       await chrome.storage.local.remove('activeTimePreference');

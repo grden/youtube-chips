@@ -33,7 +33,7 @@ export function PreferencesSection({
   };
 
   return (
-    <div className="bg-gray-50 p-4 rounded-xl mb-6">
+    <div className="bg-gray-50 px-4 pt-4 rounded-xl mb-6 overflow-y-auto">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-medium text-gray-900">Time-Based Preferences</h2>
         {!showForm && (

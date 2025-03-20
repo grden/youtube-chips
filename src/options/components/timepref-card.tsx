@@ -15,7 +15,7 @@ export default function TimePreferenceCard({ preference, onEdit, onDelete }: Tim
     };
 
     return (
-        <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow">
+        <div className="flex items-center justify-between p-4 mb-4 bg-white rounded-lg shadow">
             <div className="flex flex-col">
                 <div className="text-sm font-medium text-gray-900">
                     {formatDays(preference.days)} • {preference.startHour}:00-{preference.endHour}:00

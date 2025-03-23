@@ -13,8 +13,11 @@ interface TimePreferenceFormProps {
 // Time preference form component
 export function TimePreferenceForm({ onSave, existingPreference, onCancel, errors }: TimePreferenceFormProps) {
     const [days, setDays] = useState<number[]>(existingPreference?.days || []);
-    const [startHour, setStartHour] = useState<number>(existingPreference?.startHour || 9);
-    const [endHour, setEndHour] = useState<number>(existingPreference?.endHour || 17);
+    const [startHour, setStartHour] = useState<number>(existingPreference?.startHour ?? 9);
+    const [endHour, setEndHour] = useState<number>(existingPreference?.endHour ?? 17);
+    const [isWholeDay, setIsWholeDay] = useState<boolean>(
+        existingPreference ? existingPreference.startHour === 0 && existingPreference.endHour === 24 : false
+    );
     const [preference, setPreference] = useState<string>(existingPreference?.preference || PREDEFINED_CATEGORIES[0]);
     const [isCustomPreference, setIsCustomPreference] = useState<boolean>(
         existingPreference ? !PREDEFINED_CATEGORIES.includes(existingPreference.preference) : false
@@ -40,8 +43,8 @@ export function TimePreferenceForm({ onSave, existingPreference, onCancel, error
         const newPreference: TimePreference = {
             id: existingPreference?.id || uuidv4(),
             days,
-            startHour,
-            endHour,
+            startHour: isWholeDay ? 0 : startHour,
+            endHour: isWholeDay ? 24 : endHour,
             preference: finalPreference,
             enabled: true, // Always enabled since we're not using a toggle
         };
@@ -64,6 +67,19 @@ export function TimePreferenceForm({ onSave, existingPreference, onCancel, error
         } else {
             setIsCustomPreference(false);
             setPreference(value);
+        }
+    };
+
+    const handleWholeDayToggle = () => {
+        setIsWholeDay(!isWholeDay);
+        if (!isWholeDay) {
+            // When enabling whole day, set hours to full day
+            setStartHour(0);
+            setEndHour(24);
+        } else {
+            // When disabling whole day, set to default work hours
+            setStartHour(9);
+            setEndHour(17);
         }
     };
 
@@ -98,13 +114,28 @@ export function TimePreferenceForm({ onSave, existingPreference, onCancel, error
 
             {/* Time range selection */}
             <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Time Range</label>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-between mb-1">
+                    <label className="block text-sm font-medium text-gray-700">Time Range</label>
+                    <div className="flex items-center">
+                        <input
+                            type="checkbox"
+                            id="whole-day"
+                            checked={isWholeDay}
+                            onChange={handleWholeDayToggle}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                        <label htmlFor="whole-day" className="ml-2 text-sm text-gray-600">
+                            Whole day (24 hours)
+                        </label>
+                    </div>
+                </div>
+                <div className={`flex items-center space-x-2 ${isWholeDay ? 'opacity-50' : ''}`}>
                     <div className="relative w-full">
                         <select
                             value={startHour}
                             onChange={e => setStartHour(Number(e.target.value))}
                             className="block w-full rounded-md border-gray-300 pl-3 pr-8 py-2 appearance-none bg-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                            disabled={isWholeDay}
                         >
                             {HOURS.map(hour => (
                                 <option key={`start-${hour.value}`} value={hour.value}>
@@ -124,6 +155,7 @@ export function TimePreferenceForm({ onSave, existingPreference, onCancel, error
                             value={endHour}
                             onChange={e => setEndHour(Number(e.target.value))}
                             className="block w-full rounded-md border-gray-300 pl-3 pr-8 py-2 appearance-none bg-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                            disabled={isWholeDay}
                         >
                             {HOURS.map(hour => (
                                 <option key={`end-${hour.value}`} value={hour.value}>
@@ -138,6 +170,11 @@ export function TimePreferenceForm({ onSave, existingPreference, onCancel, error
                         </div>
                     </div>
                 </div>
+                {isWholeDay && (
+                    <p className="text-xs text-blue-600 mt-1 italic">
+                        Time preference will apply for the entire day (00:00 - 24:00)
+                    </p>
+                )}
                 {errors.timeRange && <p className="text-red-500 text-xs mt-1">{errors.timeRange}</p>}
             </div>
 

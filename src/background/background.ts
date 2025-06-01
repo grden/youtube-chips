@@ -1,3 +1,4 @@
+import { EventTypes, logEvent } from '../firebase';
 import { getActiveTimePreference } from '../utils/storage';
 
 // Constants
@@ -27,7 +28,6 @@ const checkTimePreferences = async (): Promise<void> => {
 
     const activePref = await getActiveTimePreference();
 
-    // Store active preference in local storage for quick access
     if (activePref) {
       await chrome.storage.local.set({ activeTimePreference: activePref });
       console.log(`Active time preference found: ${activePref.preference} (${activePref.startHour}-${activePref.endHour})`);
@@ -39,18 +39,27 @@ const checkTimePreferences = async (): Promise<void> => {
         chrome.tabs.reload(activeTab.id);
       }
     } else {
-      // Clear any previously active preference
       await chrome.storage.local.remove('activeTimePreference');
       console.log('No active time preference found');
     }
   } catch (error) {
     console.error('Error checking time preferences:', error);
+    await logEvent(EventTypes.ERROR_OCCURRED, {
+      context: 'checkTimePreferences',
+      error: error.message,
+      stack: error.stack
+    });
   }
 };
 
 // Set up event listeners
-chrome.runtime.onInstalled.addListener((): void => {
+chrome.runtime.onInstalled.addListener(async (details): Promise<void> => {
   console.log('Extension installed or updated');
+  await logEvent(EventTypes.EXTENSION_INSTALLED, {
+    version: chrome.runtime.getManifest().version,
+    reason: details.reason,
+    previousVersion: details.previousVersion
+  });
   setupAlarm();
 });
 

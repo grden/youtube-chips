@@ -1,5 +1,7 @@
 import { YouTubeChip } from "../utils/interface";
 
+const SIMILARITY_API_ENDPOINT = 'http://localhost:8000/api/find-similar';
+
 // Types
 type ChipMatch = {
     chip: YouTubeChip;
@@ -88,31 +90,54 @@ const calculateEditDistanceScore = (preferred: string, chipText: string): number
 };
 
 /**
- * Finds the most similar chip to the preferred chip text
+ * Finds the most similar chip to the preferred chip text by calling an external API.
  */
-export const findSimilarChip = (preferredChip: string, availableChips: YouTubeChip[]): YouTubeChip | null => {
+export const findSimilarChip = async (preferredChip: string, availableChips: YouTubeChip[]): Promise<YouTubeChip | null> => {
     if (!preferredChip || availableChips.length === 0) return null;
 
-    // Try exact match first
-    const exactMatch = availableChips.find(chip => chip.text === preferredChip);
-    if (exactMatch) return exactMatch;
+    // If your API is case-insensitive or handles normalization, you might not need toLowerCase() here.
+    // const preferredLower = preferredChip.toLocaleLowerCase(); 
 
-    const preferredLower = preferredChip.toLowerCase();
+    try {
+        const response = await fetch(SIMILARITY_API_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                preferred_chip_text: preferredChip,
+                // Send only the texts to the API, as the server likely doesn't need the full YouTubeChip objects.
+                available_chip_texts: availableChips.map(chip => chip.text) 
+            })
+        });
 
-    // Calculate scores for all available chips
-    const matches: ChipMatch[] = availableChips.map(chip => {
-        const chipLower = chip.text.toLowerCase();
-        const substringScore = calculateSubstringScore(preferredLower, chipLower);
-        const editScore = calculateEditDistanceScore(preferredLower, chipLower);
+        if (!response.ok) {
+            console.error(`Similarity API error: ${response.status} ${await response.text()}`);
+            // Fallback strategy: if API fails, optionally return null or implement local fallback
+            // For now, we'll return null to indicate failure to find a match via API.
+            return null; 
+        }
 
-        // Use the higher score between substring and edit distance
-        return {
-            chip,
-            score: Math.max(substringScore, editScore)
-        };
-    });
+        const data = await response.json();
+        
+        // Assuming your server responds with: { best_match_text: "Text of the best chip" }
+        const bestMatchText = data.best_match_text;
 
-    // Sort by score and return the best match
-    matches.sort((a, b) => b.score - a.score);
-    return matches[0].chip;
+        if (bestMatchText) {
+            // Find the original YouTubeChip object from the availableChips array
+            const matchedChip = availableChips.find(chip => chip.text === bestMatchText);
+            return matchedChip || null;
+        }
+
+        return null; // No best match text returned from API
+
+    } catch (error) {
+        console.error('Error calling similarity API:', error);
+        // Fallback strategy for network errors or other issues
+        return null;
+    }
 };
+
+// We are removing the local calculation functions (calculateLevenshteinDistance, calculateSubstringScore, calculateEditDistanceScore)
+// as the logic is now handled by the external API.
+// If you want to keep them as a fallback, we can adjust the logic above.

@@ -296,13 +296,14 @@ const applyGlobalPreference = async (): Promise<void> => {
 
         if (!exactClickSuccess) {
             // `availableChips` is already populated (with retry if it was initially empty)
-            const similarChip = findSimilarChip(preferenceToApply, availableChips);
+            // Call the new async findSimilarChip and await its result
+            const similarChip = await findSimilarChip(preferenceToApply, availableChips); 
             if (similarChip) {
                 await setTempPreference(similarChip.text, preferenceSourceForChip === 'time_pref' ? 'time' : 'global');
                 clickChip(similarChip.text, false); // Programmatic click
                 startNewChipSession(similarChip.text, preferenceSourceForChip);
             } else {
-                // Failed to find exact or similar.
+                // Failed to find exact or similar (either via API or API failed).
                 // Fallback to what is visually selected from `availableChips` or "All".
                 await setTempPreference(null);
                 const currentVisuallySelectedChip = availableChips.find(chip => isChipSelected(chip.text));

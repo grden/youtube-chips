@@ -1,23 +1,30 @@
 {
   "name": "YouTube Chips",
-  "description": "Filter YouTube by category and set time-based preferences. Your chosen chip is auto-applied, and if missing, the closest match is selected.",
+  "description": "Filter YouTube by category and set prefered chip. Your chosen chip is auto-applied, and if missing, the closest match is selected.",
   "version": "1.0.0",
   "manifest_version": 3,
   "icons": {
-    "16": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
   },
   "action": {
     "default_popup": "popup.html",
     "default_title": "YouTube Chips",
-    "default_icon": "icon.png"
+    "default_icon": "icon-48.png"
   },
   "permissions": [
     "storage",
     "tabs",
-    "alarms"
+    "alarms",
+    "crypto"
   ],
+  "host_permissions": [
+    "https://www.youtube.com/"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://*.firebaseio.com https://*.firebase.com https://*.googleapis.com;"
+  },
   "options_page": "options.html",
   "background": {
     "service_worker": "background.js",
